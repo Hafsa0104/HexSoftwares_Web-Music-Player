@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Player</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ── NAVBAR ── -->
+    <nav class="navbar">
+        <div class="brand">
+            <div class="logo-circle">A</div>
+            Aura Music
+        </div>
+        <ul class="nav-links">
+            <li class="active" data-tab="home"    id="navHome">Home</li>
+            <li              data-tab="library" id="navLibrary">My Library</li>
+            <li              data-tab="about"   id="navAbout">About</li>
+        </ul>
+    </nav>
+
+    <div class="app-wrapper">
+
+        <!-- ════════════════ HOME TAB ════════════════ -->
+        <div class="tab-page active" id="tabHome">
+            <div class="container">
+
+                <!-- search -->
+                <div class="search-bar-wrap">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search tracks, artists…" autocomplete="off">
+                    <kbd class="kbd-hint">Ctrl+F</kbd>
+                </div>
+
+                <!-- built-in playlist -->
+                <section class="playlist-section" id="builtinSection">
+                    <div class="section-header" id="toggleBuiltin">
+                        <div class="section-title-row">
+                            <i class="fa-solid fa-compact-disc section-icon cyan-icon"></i>
+                            <h2 class="section-title">Music Playlists</h2>
+                            <span class="track-badge cyan-badge" id="builtinCount">0</span>
+                        </div>
+                        <div class="section-header-right">
+                            <p class="section-sub">Curated collection</p>
+                            <i class="fa-solid fa-chevron-down collapse-arrow" id="builtinArrow"></i>
+                        </div>
+                    </div>
+                    <div class="naatItemContainer" id="builtinContainer"></div>
+                </section>
+
+                <!-- user tracks preview on home (read-only, no delete) -->
+                <section class="playlist-section" id="userPreviewSection">
+                    <div class="section-header">
+                        <div class="section-title-row">
+                            <i class="fa-solid fa-folder-open section-icon purple-icon"></i>
+                            <h2 class="section-title">My Library</h2>
+                            <span class="track-badge purple-badge" id="homeUserCount">0</span>
+                        </div>
+                        <div class="section-header-right">
+                            <p class="section-sub">Your uploads</p>
+                            <button class="pill-btn purple" id="goToLibraryBtn">
+                                <i class="fa-solid fa-arrow-right"></i> Manage
+                            </button>
+                            <i class="fa-solid fa-chevron-down collapse-arrow" id="userPreviewArrow"></i>
+                        </div>
+                    </div>
+                    <div class="naatItemContainer" id="userPreviewContainer">
+                        <div class="empty-state small" id="homeEmptyState">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <p>Your library is empty</p>
+                            <span>Go to <strong>My Library</strong> to add tracks</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <!-- ════════════════ MY LIBRARY TAB ════════════════ -->
+        <div class="tab-page" id="tabLibrary">
+            <div class="container library-container">
+
+                <!-- library header -->
+                <div class="library-header">
+                    <div>
+                        <h1 class="lib-title">My Library</h1>
+                        <p class="lib-sub">Your personal collection · <span id="libTrackCountLabel">0 tracks</span></p>
+                    </div>
+                    <div class="lib-header-actions">
+                        <button class="add-music-btn" id="addMusicBtn">
+                            <i class="fa-solid fa-plus"></i> Add Music
+                        </button>
+                        <input type="file" id="fileInput" accept="audio/*" multiple hidden>
+                    </div>
+                </div>
+
+                <!-- library search -->
+                <div class="search-bar-wrap lib-search">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="libSearchInput" placeholder="Search your library…" autocomplete="off">
+                </div>
+
+                <!-- upload drop zone -->
+                <div class="upload-zone" id="uploadZone">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p>Drag &amp; drop audio files here</p>
+                    <span>or click <strong>Add Music</strong> above · MP3, WAV, OGG, FLAC, M4A supported</span>
+                </div>
+
+                <!-- library track list -->
+                <div class="lib-track-list" id="libTrackList">
+                    <div class="lib-empty-state" id="libEmptyState">
+                        <div class="lib-empty-icon">
+                            <i class="fa-solid fa-music"></i>
+                        </div>
+                        <h3>No tracks yet</h3>
+                        <p>Upload your first song using the drop zone above or the Add Music button.</p>
+                        <button class="add-music-btn" id="addMusicBtn2">
+                            <i class="fa-solid fa-plus"></i> Add Music
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ════════════════ BOTTOM PLAYER ════════════════ -->
+        <div class="bottom-player">
+            <div class="progress-container">
+                <span id="currentTimeDisplay">00:00</span>
+                <input type="range" id="myProgressBar" min="0" value="0" max="100">
+                <span id="totalTimeDisplay">00:00</span>
+            </div>
+
+            <div class="controlsRow">
+                <div class="naatInfo">
+                    <img src="files/audio.gif" alt="" id="gif" style="display:none;">
+                    <div class="text-meta">
+                        <span class="naatTitle">Select a track to play</span>
+                        <span class="naatArtist"></span>
+                    </div>
+                </div>
+
+                <div class="icons">
+                    <i class="fa-solid fa-shuffle"        id="shuffleBtn" title="Shuffle (S)"></i>
+                    <i class="fa-solid fa-step-backward"  id="prevBtn"    title="Previous (←)"></i>
+                    <div class="play-btn-wrapper">
+                        <i class="fa-solid fa-circle-play" id="masterPlay" title="Play/Pause (Space)"></i>
+                    </div>
+                    <i class="fa-solid fa-step-forward"   id="nextBtn"    title="Next (→)"></i>
+                    <i class="fa-solid fa-repeat"         id="repeatBtn"  title="Repeat (R)"></i>
+                </div>
+
+                <div class="volumeControl">
+                    <i class="fa-solid fa-volume-high" id="volumeIcon"></i>
+                    <input type="range" id="volumeBar" min="0" max="100" value="100">
+                    <span class="vol-label" id="volLabel">100%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- drop overlay (global) -->
+    <div class="drop-overlay" id="dropOverlay">
+        <div class="drop-card">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <p>Drop audio files to add to My Library</p>
+        </div>
+    </div>
+
+    <!-- toast stack -->
+    <div class="toast-stack" id="toastStack"></div>
+
+    <!-- confirm delete modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-card">
+            <div class="modal-icon danger"><i class="fa-solid fa-trash-can"></i></div>
+            <h3>Remove track?</h3>
+            <p id="deleteModalTrackName"></p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="deleteCancelBtn">Cancel</button>
+                <button class="modal-btn danger" id="deleteConfirmBtn">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- about overlay -->
+    <div class="about-overlay" id="aboutOverlay">
+        <div class="about-card">
+            <i class="fa-solid fa-xmark close-about" id="closeAbout"></i>
+            <h2>About Aura Player</h2>
+            <hr>
+            <p>A premium, lightweight dark-themed audio web app built with HTML5, CSS Glassmorphism, and Vanilla JavaScript.</p>
+            <p style="margin-top:12px;">Upload your own tracks in <strong>My Library</strong> — they're saved in your browser and persist across visits.</p>
+            <div class="about-footer">Version 2.1.0 · Developed by Hafsa</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
